@@ -24,7 +24,6 @@ function createRenderer() {
 
     queue = new Set();
 
-
     current.forEach((fn) => {
       if (fn()) queue.add(fn);
     });
