@@ -79,7 +79,7 @@ https://npmtrends.com/chart.js-vs-d3-vs-echarts-vs-plotly.js-vs-recharts-vs-thre
 [![_r]][r_]
 [![_t]][t_]
 [![_v]][v_]
-[![_V]][V_]
+[![_vv]][vv_]
 [![_d]][d_]
 
 [_c]: ./public/_chartjs.jpg
@@ -88,7 +88,7 @@ https://npmtrends.com/chart.js-vs-d3-vs-echarts-vs-plotly.js-vs-recharts-vs-thre
 [_r]: ./public/_recharts.jpg
 [_t]: ./public/_three.jpg
 [_v]: ./public/_victory.jpg
-[_V]: ./public/_visx.jpg
+[_vv]: ./public/_visx.jpg
 [_d]: ./public/_d3.jpg
 
 [c_]: https://plotting-libraries-test.pages.dev/chartjs
@@ -97,7 +97,7 @@ https://npmtrends.com/chart.js-vs-d3-vs-echarts-vs-plotly.js-vs-recharts-vs-thre
 [r_]: https://plotting-libraries-test.pages.dev/recharts
 [t_]: https://plotting-libraries-test.pages.dev/three
 [v_]: https://plotting-libraries-test.pages.dev/victory
-[V_]: https://plotting-libraries-test.pages.dev/visx
+[vv_]: https://plotting-libraries-test.pages.dev/visx
 [d_]: https://plotting-libraries-test.pages.dev/d3
 
 ## Error 1: Could not resolve "buffer/"
