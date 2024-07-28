@@ -1,33 +1,38 @@
 /**
  * ref: https://commerce.nearform.com/open-source/victory/gallery/discontinuous-scale
  */
-import { VictoryChart, VictoryLine, VictoryScatter } from "victory";
+import { VictoryAxis, VictoryChart, VictoryLine } from "victory";
+import dataset from "../dataset.json";
+import { COLORS, dateToMonth } from "../utils";
 
-const data = [
-  { x: 0, y: 0 },
-  { x: 1, y: 2 },
-  { x: 2, y: 1 },
-  { x: 3, y: 4 },
-  { x: 4, y: 3 },
-  { x: 5, y: 5 },
-];
+function transform([date, value]: [string, number]) {
+  return {
+    x: dateToMonth(date),
+    y: value / 1000,
+  };
+}
+
+const data = Object.entries(dataset).map(transform);
 
 function App() {
   return (
-    <div>
-      <VictoryChart polar={false}>
-        <VictoryLine
-          interpolation="catmullRom"
-          data={data}
-          style={{ data: { stroke: "#c43a31" } }}
-        />
-        <VictoryScatter
-          data={data}
-          size={5}
-          style={{ data: { fill: "#c43a31" } }}
-        />
-      </VictoryChart>
-    </div>
+    <VictoryChart polar={false}>
+      <VictoryAxis
+        fixLabelOverlap={true} // Prevents overlapping of labels
+      />
+      <VictoryAxis
+        dependentAxis
+        style={{
+          axisLabel: { padding: 35 },
+          grid: { stroke: "none" }, // Hide grid lines
+        }}
+      />
+      <VictoryLine
+        interpolation="catmullRom"
+        data={data}
+        style={{ data: { stroke: COLORS.sooty, strokeWidth: 0.5 } }}
+      />
+    </VictoryChart>
   );
 }
 

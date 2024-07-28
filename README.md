@@ -73,32 +73,9 @@ https://npmtrends.com/chart.js-vs-d3-vs-echarts-vs-plotly.js-vs-recharts-vs-thre
 [Tb_]: https://img.shields.io/bundlephobia/minzip/three
 [Vb_]: https://img.shields.io/bundlephobia/minzip/victory
 
+# Error 1
+
 `npm i plotly.js` でインストールした plotly.js が esbuild でビルドできない
-
-
-
-> https://stackoverflow.com/questions/39084438/how-to-import-plotly-js-into-typescript
->
-> Types for plotly.js basic & Co.
-> You can also use types together with the [partial npm bundles](https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles) like basic or cartesian, starting in v1.39.0. Example for plotly.js basic (contains scatter, pie and bar):
-> 
-> npm i plotly.js-basic-dist
-> npm i -D @types/plotly.js
-> Add the following in tsconfig.json:
-> 
-> "compilerOptions": {
->   // make aliases absolute imports relative to the project root
->   "baseUrl": "./",
->   "paths": {
->     "plotly.js-basic-dist": [
->       "node_modules/@types/plotly.js"
->     ]
->   }
-> }
-> Above paths config just maps your imported plotly.js-basic-dist package to those types defined in @types/plotly.js, so you can use them with plotly.js-basic-dist. More Infos:
-> 
-> [baseUrl](https://www.typescriptlang.org/docs/handbook/module-resolution.html#base-url)
-> [paths](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping)
 
 ```ruby
 ✘ [ERROR] Could not resolve "buffer/"
@@ -125,6 +102,55 @@ node_modules/plotly.js/src/traces/image/helpers.js:5:21: ERROR: Could not resolv
   warnings: [Getter/Setter]
 }
 ```
+
+fix: `@types/plotly.js` をインストールし、`tsconfig.json` を調整する
+
+> https://stackoverflow.com/questions/39084438/how-to-import-plotly-js-into-typescript
+>
+> Types for plotly.js basic & Co.
+> You can also use types together with the [partial npm bundles](https://github.com/plotly/plotly.js/blob/master/dist/README.md#partial-bundles) like basic or cartesian, starting in v1.39.0. Example for plotly.js basic (contains scatter, pie and bar):
+> 
+> npm i plotly.js-basic-dist
+> npm i -D @types/plotly.js
+> Add the following in tsconfig.json:
+> 
+> "compilerOptions": {
+>   // make aliases absolute imports relative to the project root
+>   "baseUrl": "./",
+>   "paths": {
+>     "plotly.js-basic-dist": [
+>       "node_modules/@types/plotly.js"
+>     ]
+>   }
+> }
+> Above paths config just maps your imported plotly.js-basic-dist package to those types defined in @types/plotly.js, so you can use them with plotly.js-basic-dist. More Infos:
+> 
+> [baseUrl](https://www.typescriptlang.org/docs/handbook/module-resolution.html#base-url)
+> [paths](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping)
+
+# Error 2
+
+React で recharts を使うとエラーが発生する
+
+```ruby
+Warning: XAxis: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.
+
+Warning: YAxis: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.
+```
+
+fix: `recharts@alpha` をインストールする
+
+> https://github.com/recharts/recharts/issues/3615
+>
+> Hey y'all, I think installing `v2.10.2` should fix the warning, so try this:
+> 
+> `npm install recharts@2.10.2`
+> 
+> [UPDATE]: `v2.10.2` was working perfectly in a React version under R18
+> 
+> For React versions above R18, this works perfectly for me `npm i recharts@2.13.0-alpha.1`
+
+
 
 > # React + TypeScript + Vite
 > 

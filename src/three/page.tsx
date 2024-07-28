@@ -1,5 +1,7 @@
 import * as THREE from "three";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
+import dataset from "../dataset.json";
+import { COLORS } from "../utils";
 
 type Fn = () => unknown;
 
@@ -8,22 +10,23 @@ function createRenderer() {
   const aspect = window.innerWidth / window.innerHeight;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new THREE.WebGLRenderer({ alpha: true });
 
-  camera.position.z = 5;
+  camera.position.z = 1;
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  let queue: Fn[] = [];
+  let queue = new Set<Fn>();
   let current = queue;
 
   const flush = () => {
-    if (!current.length) return;
+    if (!current.size) return;
 
-    queue = [] as Fn[];
+    queue = new Set();
+
 
     current.forEach((fn) => {
-      if (fn()) queue.push(fn);
+      if (fn()) queue.add(fn);
     });
 
     current = queue;
@@ -31,18 +34,31 @@ function createRenderer() {
 
   let requestId: number;
 
+  const invalidate = () => {
+    requestId = requestAnimationFrame(tick);
+  }
+
   const tick = () => {
     flush();
     renderer.render(scene, camera);
     requestId = requestAnimationFrame(tick);
   };
 
+  const observer = new ResizeObserver((entries) => {
+    const { width, height } = entries[0].contentRect;
+    renderer.setSize(width, height);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+  });
+
   const mount = (el: Element) => {
-    tick();
+    observer.observe(el);
     el.appendChild(renderer.domElement);
+    tick();
   };
 
   const clean = () => {
+    observer.disconnect();
     cancelAnimationFrame(requestId);
     renderer.domElement.remove();
   };
@@ -61,6 +77,7 @@ function createRenderer() {
     clean,
     tick,
     ref,
+    invalidate,
   };
 }
 
@@ -68,51 +85,52 @@ function useRenderer() {
   return useMemo(() => createRenderer(), []);
 }
 
-function createShader(parameters?: THREE.ShaderMaterialParameters) {
-  const geometry = new THREE.PlaneGeometry(1, 1);
-  const material = new THREE.ShaderMaterial(parameters);
-  const mesh = new THREE.Mesh(geometry, material);
-  return mesh;
+function useFrame(fn: () => unknown, queue: Set<Fn>) {
+  const ref = useRef({ current: fn, cache: () => ref.current() }).current;
+  ref.current = fn;
+
+  queue.add(ref.cache);
 }
 
-function useShader(paramaters?: THREE.ShaderMaterialParameters) {
-  return useMemo(() => createShader(paramaters), []);
-}
+function createCurve() {
+  const curve = new THREE.SplineCurve(
+    Object.values(dataset).map(
+      (value, i, { length }) => new THREE.Vector2(i / length, value / 1000)
+    )
+  );
 
-const uniforms = {};
+  const points = curve.getPoints(curve.getLength());
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  const material = new THREE.MeshBasicMaterial({ color: COLORS.sooty });
+  const mesh = new THREE.Line(geometry, material);
 
-const vertexShader = `
-varying vec2 vUv;
-void main() {
-  vUv = vec3(uv, 1).xy;
-  vec4 pos = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  gl_Position = vec4(position * 2.0, 1.0);
-}
-`;
+  mesh.position.x = -0.5;
+  mesh.position.y = -10;
 
-const fragmentShader = `
-varying vec2 vUv;
-void main() {
-  gl_FragColor = vec4(vUv, 0.0, 1.0);
+  const group = new THREE.Group();
+
+  group.add(mesh);
+
+  group.scale.x = 1.6;
+  group.scale.y = 0.02;
+
+  return {
+    group,
+    curve,
+    points,
+    geometry,
+    material,
+    mesh,
+  };
 }
-`;
 
 export default function App() {
-  const { ref, scene } = useRenderer();
-  const shader = useShader({ uniforms, vertexShader, fragmentShader });
+  const { ref, queue, scene } = useRenderer();
 
-  useMemo(() => {
-    scene.add(shader);
-  }, []);
+  useFrame(() => {
+    const curve = createCurve();
+    scene.add(curve.group);
+  }, queue);
 
-  return (
-    <div
-      ref={ref}
-      style={{
-        width: "100%",
-        height: "100%",
-        position: "fixed",
-      }}
-    />
-  );
+  return <div className="size-full" ref={ref} />;
 }
