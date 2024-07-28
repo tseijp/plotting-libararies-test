@@ -1,4 +1,4 @@
-技術選定
+## libraries
 
 - chartjs
 - echarts
@@ -73,9 +73,45 @@ https://npmtrends.com/chart.js-vs-d3-vs-echarts-vs-plotly.js-vs-recharts-vs-thre
 [Tb_]: https://img.shields.io/bundlephobia/minzip/three
 [Vb_]: https://img.shields.io/bundlephobia/minzip/victory
 
-# Error 1
+[![_c]][c_]
+[![_e]][e_]
+[![_p]][p_]
+[![_r]][r_]
+[![_t]][t_]
+[![_v]][v_]
+[![_V]][V_]
+[![_d]][d_]
 
-`npm i plotly.js` でインストールした plotly.js が esbuild でビルドできない
+[_c]: ./public/_chartjs.jpg
+[_e]: ./public/_echarts.jpg
+[_p]: ./public/_plotly.jpg
+[_r]: ./public/_recharts.jpg
+[_t]: ./public/_three.jpg
+[_v]: ./public/_victory.jpg
+[_V]: ./public/_visx.jpg
+[_d]: ./public/_d3.jpg
+
+[c_]: https://plotting-libraries-test.pages.dev/chartjs
+[e_]: https://plotting-libraries-test.pages.dev/echarts
+[p_]: https://plotting-libraries-test.pages.dev/plotly
+[r_]: https://plotting-libraries-test.pages.dev/recharts
+[t_]: https://plotting-libraries-test.pages.dev/three
+[v_]: https://plotting-libraries-test.pages.dev/victory
+[V_]: https://plotting-libraries-test.pages.dev/visx
+[d_]: https://plotting-libraries-test.pages.dev/d3
+
+## Error 1: Could not resolve "buffer/"
+
+<details>
+<summary>
+
+plotly.js installed with `npm i plotly.js` cannot be built with vite
+
+</summary>
+
+`npm i plotly.js` でインストールした plotly.js が vite でビルドできなかったです 😭
+
+</details>
 
 ```ruby
 ✘ [ERROR] Could not resolve "buffer/"
@@ -103,7 +139,16 @@ node_modules/plotly.js/src/traces/image/helpers.js:5:21: ERROR: Could not resolv
 }
 ```
 
-fix: `@types/plotly.js` をインストールし、`tsconfig.json` を調整する
+<details>
+<summary>
+
+fix: I had to use `plotly.js-dist` instead of `plotly.js` 😭  and install `@types/plotly.js` and adjust `tsconfig.json`
+
+</summary>
+
+`plotly.js` の代わりに `plotly.js-dist` をつかう必要がありました 😭 また `@types/plotly.js` をインストールし、`tsconfig.json` を調整する必要がありました 😭
+
+</details>
 
 > https://stackoverflow.com/questions/39084438/how-to-import-plotly-js-into-typescript
 >
@@ -128,9 +173,19 @@ fix: `@types/plotly.js` をインストールし、`tsconfig.json` を調整す�
 > [baseUrl](https://www.typescriptlang.org/docs/handbook/module-resolution.html#base-url)
 > [paths](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping)
 
-# Error 2
+## Error 2: XAxis: Support for defaultProps will be removed from function components in a future major release.
 
-React で recharts を使うとエラーが発生する
+<details>
+<summary>
+
+recharts causes errors in console when used with React
+
+</summary>
+
+recharts は Reactと使うと console にエラーが発生しました 😭
+
+</details>
+
 
 ```ruby
 Warning: XAxis: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.
@@ -138,7 +193,17 @@ Warning: XAxis: Support for defaultProps will be removed from function component
 Warning: YAxis: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.
 ```
 
-fix: `recharts@alpha` をインストールする
+<details>
+<summary>
+
+fix: install `recharts@alpha`
+
+</summary>
+
+`recharts@alpha` をインストールする必要がありました 😭
+
+</summary>
+</details>
 
 > https://github.com/recharts/recharts/issues/3615
 >
@@ -151,6 +216,7 @@ fix: `recharts@alpha` をインストールする
 > For React versions above R18, this works perfectly for me `npm i recharts@2.13.0-alpha.1`
 
 
+## More
 
 > # React + TypeScript + Vite
 > 
