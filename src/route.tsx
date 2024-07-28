@@ -18,7 +18,7 @@ function Header() {
     <ul className="flex header">
       {routes.map(({ path }) => (
         <li key={path} className="link">
-          <a href={path}>{path === "/" ? "root" : path}</a>
+          <a href={path}>{path === "/" ? "root" : path?.replace("/", "")}</a>
         </li>
       ))}
     </ul>
@@ -27,20 +27,20 @@ function Header() {
 
 function Links() {
   return (
-    <ul className="flex flex-col">
+    <ul className="flex flex-col gap-10">
       {routes.map(({ path, element }) =>
         path === "/" ? null : (
           <li key={path} className="flex">
             <div className="container">{element}</div>
             <a href={path} style={{ color: "black" }}>
-              {path}
+              {path?.replace("/", "")}
             </a>
           </li>
         )
       )}
     </ul>
   );
-};
+}
 
 const routes: RouteObject[] = [
   {

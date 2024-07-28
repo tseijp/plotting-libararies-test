@@ -41,6 +41,7 @@ const option: ECBasicOption = {
       symbol: "none",
       lineStyle: {
         color: COLORS.sooty, // Use specified color for the line
+        width: 1,
       },
     },
   ],
@@ -57,10 +58,5 @@ const createChart = (el: HTMLDivElement | null) => {
 };
 
 export default function App() {
-  return (
-    <div
-      style={{ width: "100%", maxHeight: "100%", height: "100vh" }}
-      ref={createChart}
-    />
-  );
+  return <div className="size-full" ref={createChart} />;
 }

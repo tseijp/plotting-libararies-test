@@ -39,9 +39,8 @@ function createD3(el: HTMLDivElement | null) {
   // Define the line
   const line = d3
     .line()
-    .x((d: any) => x(d.date))
-    .y((d: any) => y(d.value))
-
+    .x((d) => x((d as unknown as { date: Date }).date))
+    .y((d) => y((d as unknown as { value: number }).value))
     .curve(d3.curveMonotoneX); // Smooth the line
 
   // Append the svg object to the body of the page
@@ -63,7 +62,11 @@ function createD3(el: HTMLDivElement | null) {
   svg.append("g").call(d3.axisLeft(y));
 
   // Add the line path.
-  svg.append("path").datum(data).attr("class", "line").attr("d", line as any);
+  svg
+    .append("path")
+    .datum(data)
+    .attr("class", "line")
+    .attr("d", line as unknown as string);
 }
 
 export default function App() {

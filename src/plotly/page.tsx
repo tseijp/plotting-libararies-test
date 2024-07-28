@@ -15,12 +15,12 @@ const data: Partial<PlotData>[] = [
     y,
     line: {
       color: COLORS.sooty,
+      width: 1,
     }
   },
 ];
 
 const layout: Partial<Layout> = {
-  title: "Daily Walking Distance Over Time",
   xaxis: {
     showgrid: false, // Hide x-axis grid lines
   },
@@ -38,5 +38,5 @@ const createPlotly = (el: HTMLDivElement | null) => {
 
 // React component using the Plotly chart
 export default function App() {
-  return <div id="plotly" ref={createPlotly} />;
+  return <div id="plotly" className="size-full" ref={createPlotly} />;
 }

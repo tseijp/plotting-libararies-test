@@ -16,6 +16,7 @@ function transform(data: { [key: string]: number }): ChartData {
         borderColor: COLORS.sooty,
         pointRadius: 0, // Remove points
         tension: 1, // Smooth lines
+        borderWidth: 1,
       },
     ],
   };
