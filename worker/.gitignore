@@ -1,0 +1,13 @@
+# Created by https://www.toptal.com/developers/gitignore/api/remix+cloudflareworkers,remix+cloudflarepages
+# Edit at https://www.toptal.com/developers/gitignore?templates=remix+cloudflareworkers,remix+cloudflarepages
+
+### Remix+CloudflarePages ###
+/functions/\[\[path\]\].js
+/functions/\[\[path\]\].js.map
+
+### Remix+CloudflareWorkers ###
+./dist
+.mf
+.wrangler
+
+# End of https://www.toptal.com/developers/gitignore/api/remix+cloudflareworkers,remix+cloudflarepages
