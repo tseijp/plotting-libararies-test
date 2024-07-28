@@ -105,14 +105,10 @@ export default function App() {
     scene.add(shader);
   }, []);
 
+  return null
   return (
     <div
       ref={ref}
-      style={{
-        width: "100%",
-        height: "100%",
-        position: "fixed",
-      }}
     />
   );
 }

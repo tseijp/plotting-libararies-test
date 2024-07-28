@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouteObject,
+  RouterProvider,
+} from "react-router-dom";
 
 import ChartJSPage from "./chartjs/page";
 import D3Page from "./d3/page";
@@ -8,14 +12,26 @@ import PlotlyPage from "./plotly/page";
 import ThreePage from "./three/page";
 import VisxPage from "./visx/page";
 import VictoryPage from "./victory/page";
-import ParentSize from "@visx/responsive/lib/components/ParentSize";
 
-const Links = () => {
+function Header() {
   return (
-    <ul>
-      {routes.map(({ path }) =>
+    <ul className="flex header">
+      {routes.map(({ path }) => (
+        <li key={path} className="link">
+          <a href={path}>{path === "/" ? "root" : path}</a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Links() {
+  return (
+    <ul className="flex flex-col">
+      {routes.map(({ path, element }) =>
         path === "/" ? null : (
-          <li key={path}>
+          <li key={path} className="flex">
+            <div className="container">{element}</div>
             <a href={path} style={{ color: "black" }}>
               {path}
             </a>
@@ -24,7 +40,7 @@ const Links = () => {
       )}
     </ul>
   );
-}
+};
 
 const routes: RouteObject[] = [
   {
@@ -34,10 +50,6 @@ const routes: RouteObject[] = [
   {
     path: "/chartjs",
     element: <ChartJSPage />,
-  },
-  {
-    path: "/d3",
-    element: <D3Page />,
   },
   {
     path: "/echarts",
@@ -61,18 +73,23 @@ const routes: RouteObject[] = [
   },
   {
     path: "/visx",
-    element: (
-      <ParentSize>
-        {({ width, height }) => <VisxPage width={width} height={height} />}
-      </ParentSize>
-    ),
+    element: <VisxPage />,
+  },
+  {
+    path: "/d3",
+    element: <D3Page />,
   },
 ];
 
 const router = createBrowserRouter(routes);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <main>
+      <Header />
+      <RouterProvider router={router} />
+    </main>
+  );
 };
 
 export default App;

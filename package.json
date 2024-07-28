@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@visx/axis": "^3.10.1",
     "@visx/curve": "latest",
     "@visx/gradient": "latest",
     "@visx/group": "latest",

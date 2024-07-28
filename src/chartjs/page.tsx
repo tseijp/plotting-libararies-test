@@ -1,34 +1,41 @@
 import Chart, { ChartConfiguration, ChartData } from "chart.js/auto";
+import dataset from "../dataset.json";
+import { LABELS, COLORS, dateToMonth } from "../utils";
 
-const data: ChartData = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
-  datasets: [
-    {
-      label: "Looping tension",
-      data: [65, 59, 80, 81, 26, 55, 40],
-      fill: false,
-      borderColor: "rgb(75, 192, 192)",
-    },
-  ],
-};
+// Function to prepare the data for Chart.js
+function transform(data: { [key: string]: number }): ChartData {
+  const labels = Object.keys(data).map(dateToMonth);
+  const values = Object.values(data).map((distance) => distance / 1000);
 
-const config: ChartConfiguration = {
-  type: "line",
-  data,
-  options: {
-    animations: {
-      tension: {
-        duration: 1000,
-        easing: "linear",
-        from: 1,
-        to: 0,
+  return {
+    labels,
+    datasets: [
+      {
+        data: values,
+        label: LABELS.DATASET_LABEL,
+        borderColor: COLORS.sooty,
+        pointRadius: 0, // Remove points
+        tension: 1, // Smooth lines
       },
-    },
+    ],
+  };
+}
+
+const chartConfiguration: ChartConfiguration = {
+  type: "line",
+  data: transform(dataset),
+  options: {
     scales: {
       y: {
-        // defining min and max so hiding the dataset does not change scale range
-        min: 0,
-        max: 100,
+        beginAtZero: true,
+        grid: {
+          display: false,
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        }
       },
     },
   },
@@ -42,15 +49,9 @@ const createChart = (el: HTMLCanvasElement) => {
     return;
   }
 
-  chart = new Chart(el, config);
+  chart = new Chart(el, chartConfiguration);
 };
 
-function App() {
-  return (
-    <>
-      <canvas ref={createChart} />
-    </>
-  );
+export default function App() {
+  return <canvas ref={createChart} />;
 }
-
-export default App;

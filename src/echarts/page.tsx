@@ -4,20 +4,44 @@
  * https://echarts.apache.org/examples/en/editor.html?c=line-smooth
  */
 import * as echarts from "echarts";
+import dataset from "../dataset.json";
+import type { ECBasicOption } from "echarts/types/dist/shared";
+import { COLORS, dateToMonth } from "../utils";
 
-const option = {
+function transform(data: { [key: string]: number }) {
+  const dates = [] as string[];
+  const values = [] as number[];
+  for (const [date, value] of Object.entries(data)) {
+    dates.push(dateToMonth(date));
+    values.push(value / 1000);
+  }
+  return { dates, values };
+}
+
+const { dates, values } = transform(dataset);
+
+const option: ECBasicOption = {
   xAxis: {
     type: "category",
-    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    data: dates,
+    axisLine: { show: false }, // Hide the axis line
+    axisTick: { show: false }, // Hide the axis ticks
   },
   yAxis: {
     type: "value",
+    axisLine: { show: false }, // Hide the axis line
+    axisTick: { show: false }, // Hide the axis ticks
+    splitLine: { show: false }, // Hide the grid lines for Y axis
   },
   series: [
     {
-      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      data: values,
       type: "line",
       smooth: true,
+      symbol: "none",
+      lineStyle: {
+        color: COLORS.sooty, // Use specified color for the line
+      },
     },
   ],
 };
@@ -35,7 +59,7 @@ const createChart = (el: HTMLDivElement | null) => {
 export default function App() {
   return (
     <div
-      style={{ position: "fixed", width: "100%", height: "100%" }}
+      style={{ width: "100%", maxHeight: "100%", height: "100vh" }}
       ref={createChart}
     />
   );
