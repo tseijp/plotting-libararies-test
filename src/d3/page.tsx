@@ -1,6 +1,9 @@
 import * as d3 from "d3";
 import dataset from "../dataset.json";
 
+const WIDTH = 250;
+const HEIGHT = 200;
+
 // Formatting function
 function transform([date, value]: [string, number]) {
   return {
@@ -13,8 +16,8 @@ function transform([date, value]: [string, number]) {
 const data = Object.entries(dataset).map(transform);
 
 const margin = { top: 20, right: 20, bottom: 30, left: 50 },
-  width = 960 - margin.left - margin.right,
-  height = 500 - margin.top - margin.bottom;
+  width = WIDTH - margin.left - margin.right,
+  height = HEIGHT - margin.top - margin.bottom;
 
 
 let svg: d3.Selection<SVGGElement, unknown, HTMLElement, undefined>;
@@ -70,5 +73,5 @@ function createD3(el: HTMLDivElement | null) {
 }
 
 export default function App() {
-  return <div ref={createD3} id="chart" />;
+  return <div className="size-full" ref={createD3} id="chart" />;
 }

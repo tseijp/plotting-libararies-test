@@ -6,6 +6,9 @@ import { AxisBottom, AxisLeft } from "@visx/axis";
 import { COLORS } from "../utils"; // Adjust the import path as needed
 import dataset from "../dataset.json";
 
+const WIDTH = 250;
+const HEIGHT = 200;
+
 function transform([date, value]: [string, number]) {
   return {
     date: new Date(date),
@@ -18,16 +21,16 @@ const data = Object.entries(dataset).map(transform);
 // Define scales
 const xScale = scaleTime({
   domain: [data[0].date, data[data.length - 1].date],
-  range: [0, 500], // Set range based on the component size
+  range: [0, WIDTH], // Set range based on the component size
 });
 const yScale = scaleLinear({
   domain: [0, Math.max(...data.map((d) => d.value))],
-  range: [400, 0], // Set range based on the component size
+  range: [HEIGHT, 0], // Set range based on the component size
 });
 
 export default function App() {
   return (
-    <svg width={500} height={400}>
+    <svg width={WIDTH} height={HEIGHT}>
       <Group left={40} top={10}>
         <AxisBottom
           scale={xScale}
