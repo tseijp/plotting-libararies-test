@@ -55,15 +55,6 @@ function createD3(el: HTMLDivElement | null) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  // Add the X Axis
-  svg
-    .append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
-
-  // Add the Y Axis
-  svg.append("g").call(d3.axisLeft(y));
-
   // Add the line path.
   svg
     .append("path")

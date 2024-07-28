@@ -2,7 +2,6 @@ import { scaleTime, scaleLinear } from "@visx/scale";
 import { LinePath } from "@visx/shape";
 import { curveNatural } from "@visx/curve";
 import { Group } from "@visx/group";
-import { AxisBottom, AxisLeft } from "@visx/axis";
 import { COLORS } from "../utils"; // Adjust the import path as needed
 import dataset from "../dataset.json";
 
@@ -32,18 +31,6 @@ export default function App() {
   return (
     <svg width={WIDTH} height={HEIGHT}>
       <Group left={40} top={10}>
-        <AxisBottom
-          scale={xScale}
-          numTicks={7}
-          stroke={COLORS.sooty}
-          tickStroke={COLORS.sooty}
-        />
-        <AxisLeft
-          scale={yScale}
-          left={0}
-          stroke={COLORS.sooty}
-          tickStroke={COLORS.sooty}
-        />
         <LinePath
           data={data}
           curve={curveNatural}
