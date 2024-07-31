@@ -4,6 +4,8 @@
 import { getAssetFromKV, serveSinglePageApp } from '@cloudflare/kv-asset-handler';
 import manifestJSON from '__STATIC_CONTENT_MANIFEST';
 
+const DEPLOY_STATIC_URL = 'https://plotting-libraries-test.pages.dev';
+
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -48,8 +50,10 @@ export default {
 		);
 		if (isAssetFileRequest(request)) return asset;
 
-		// e.g. https://example.workers.dev/?id=1
-		const id = new URL(request.url).searchParams.get('id');
+		const url = new URL(request.url);
+		const pathname = url.pathname;
+		const id = pathname.split('/').pop();
+
 		if (id === undefined) return asset;
 
 		const html = await asset.text();
@@ -65,11 +69,20 @@ export default {
 };
 
 function generateOgpMetaTags(id: string): string {
-	console.log(id)
 	const description = `記事:${id}の説明`;
+	const title = `plotting library test - ${id}`;
+
 	return `
-    <meta name="description" content="${description}" />
-    <meta property="og:title" content="記事：${id}のタイトル" />
-    <meta property="og:description" content="${description}" />
+        <meta name="description" content="${description}" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="${title}" />
+        <meta property="og:description" content="${description}" />
+        <meta property="og:image" content="${DEPLOY_STATIC_URL}/_${id}.jpg" />
+        <meta property="og:url" content="https://example.com/${id}" />
+        <meta property="og:site_name" content="Your Site Name" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="${title}" />
+        <meta name="twitter:description" content="${description}" />
+        <meta name="twitter:image" content="${DEPLOY_STATIC_URL}/_${id}.jpg" />
   `;
 }
