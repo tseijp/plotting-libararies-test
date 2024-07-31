@@ -71,7 +71,7 @@ export default {
 function generateOgpMetaTags(id: string): string {
 	const description = `記事:${id}の説明`;
 	const title = `plotting library test - ${id}`;
-	const filename = id ? `_${id}.jpg` : 'chatgpt.jpg';
+	const filename = id ? `_${id}.jpg` : 'chatgpt.png';
 
 	return `
         <meta name="description" content="${description}" />
