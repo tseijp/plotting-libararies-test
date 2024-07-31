@@ -71,18 +71,19 @@ export default {
 function generateOgpMetaTags(id: string): string {
 	const description = `記事:${id}の説明`;
 	const title = `plotting library test - ${id}`;
+	const filename = id ? `_${id}.jpg` : 'chatgpt.jpg';
 
 	return `
         <meta name="description" content="${description}" />
         <meta property="og:type" content="article" />
         <meta property="og:title" content="${title}" />
         <meta property="og:description" content="${description}" />
-        <meta property="og:image" content="${DEPLOY_STATIC_URL}/_${id}.jpg" />
+        <meta property="og:image" content="${DEPLOY_STATIC_URL}/${filename}" />
         <meta property="og:url" content="https://example.com/${id}" />
         <meta property="og:site_name" content="Your Site Name" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="${title}" />
         <meta name="twitter:description" content="${description}" />
-        <meta name="twitter:image" content="${DEPLOY_STATIC_URL}/_${id}.jpg" />
+        <meta name="twitter:image" content="${DEPLOY_STATIC_URL}/${filename}" />
   `;
 }
